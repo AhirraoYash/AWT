@@ -10,6 +10,7 @@ const JobApplicationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [submittedData, setSubmittedData] = useState(null); // Store Submitted Data
 
   const validate = () => {
     let newErrors = {};
@@ -35,6 +36,12 @@ const JobApplicationForm = () => {
 
   const handleFileChange = (e) => {
     setFormData({ ...formData, resume: e.target.files[0] });
+  };
+
+  const handleSubmit = () => {
+    setSubmittedData(formData);
+    setStep(1); // Reset form to Step 1
+    setFormData({ name: "", email: "", experience: "", resume: null });
   };
 
   return (
@@ -64,7 +71,18 @@ const JobApplicationForm = () => {
           <h2>Step 3: Upload Resume</h2>
           <input type="file" name="resume" onChange={handleFileChange} />
           <button onClick={handleBack}>Back</button>
-          <button onClick={() => alert("Form Submitted Successfully!")}>Submit</button>
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+      )}
+
+      {/* Show Submitted Data */}
+      {submittedData && (
+        <div className="submitted-data">
+          <h2>✅ Application Submitted</h2>
+          <p><strong>Name:</strong> {submittedData.name}</p>
+          <p><strong>Email:</strong> {submittedData.email}</p>
+          <p><strong>Experience:</strong> {submittedData.experience}</p>
+          <p><strong>Resume:</strong> {submittedData.resume ? submittedData.resume.name : "Not Uploaded"}</p>
         </div>
       )}
     </div>
